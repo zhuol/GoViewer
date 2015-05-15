@@ -78,9 +78,10 @@ namespace GoViewer
         /// <param name="isBlack">true为黑， false为白, null为空</param>
         private void drawStone(Graphics g, int i, int j, bool? isBlack)
         {
+            //TODO: Adjust stone postion if click on line or inside square
             if (isBlack == null) return;
-            int x = width / 2 - 9 * size + j * size;
-            int y = height / 2 - 9 * size + i * size;
+            int x = width / 2 - 9 * size + j * size + size / 2;
+            int y = height / 2 - 9 * size + i * size + size / 2;
 
             //设置颜色渐变画棋子
             Brush brush;
@@ -101,7 +102,7 @@ namespace GoViewer
         {
             width = boardPanel.Width;
             height = boardPanel.Height;
-            size = Math.Min(width, height) / 21;
+            size = Math.Min(width, height) / 20;
             img = new Bitmap(width, height);
             drawImage();
             Refresh();
@@ -214,7 +215,7 @@ namespace GoViewer
         {
             width = boardPanel.Width;
             height = boardPanel.Height;
-            size = Math.Min(width, height) / 21;
+            size = Math.Min(width, height) / 20;
             turn = BLACK;
             img = new Bitmap(width, height);
             drawImage();
@@ -233,21 +234,22 @@ namespace GoViewer
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.CompositingQuality = CompositingQuality.HighQuality;
 
-            g.FillRectangle(Brushes.Gray, width / 2 - 9 * size - size / 4 + 3, height / 2 - 9 * size - size / 4 + 3, size * 19 + size / 2, size * 19 + size / 2);
-            g.FillRectangle(Brushes.Peru, width / 2 - 9 * size - size / 4, height / 2 - 9 * size - size / 4, size * 19 + size / 2, size * 19 + size / 2);
+            //g.FillRectangle(Brushes.Gray, width / 2 - 9 * size - size / 4 + 3, height / 2 - 9 * size - size / 4 + 3, size * 19 + size / 2, size * 19 + size / 2);           
+            //g.FillRectangle(Brushes.Peru, width / 2 - 9 * size - size / 4, height / 2 - 9 * size - size / 4, size * 19 + size / 2, size * 19 + size / 2);
+            g.FillRectangle(Brushes.Peru, 0, 0, boardPanel.Width, boardPanel.Height);
             Pen pen = new Pen(Brushes.Black, 1);
             for (int i = 0; i < 19; i++)
             {
-                g.DrawLine(pen, width / 2 - 9 * size + i * size + size / 2, height / 2 - 9 * size + size / 2,
-                    width / 2 - 9 * size + i * size + size / 2, height / 2 + 9 * size + size / 2);
-                g.DrawLine(pen, width / 2 - 9 * size + size / 2, height / 2 - 9 * size + i * size + size / 2,
-                    width / 2 + 9 * size + size / 2, height / 2 - 9 * size + i * size + size / 2);
+                g.DrawLine(pen, width / 2 - 9 * size + i * size, height / 2 - 9 * size,
+                    width / 2 - 9 * size + i * size, height / 2 + 9 * size);
+                g.DrawLine(pen, width / 2 - 9 * size, height / 2 - 9 * size + i * size,
+                    width / 2 + 9 * size, height / 2 - 9 * size + i * size);
             }
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    g.FillEllipse(Brushes.Black, width / 2 - 9 * size + size / 2 + ((i + 1) * 6 - 3) * size - 4,
-                        height / 2 - 9 * size + size / 2 + ((j + 1) * 6 - 3) * size - 4, 8, 8);
+                    g.FillEllipse(Brushes.Black, width / 2 - 9 * size + ((i + 1) * 6 - 3) * size - 4,
+                        height / 2 - 9 * size + ((j + 1) * 6 - 3) * size - 4, 8, 8);
                 }
             for (int i = 0; i < 19; i++)
                 for (int j = 0; j < 19; j++)
